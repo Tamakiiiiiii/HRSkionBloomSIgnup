@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Management System - Employee Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="signupcss.css">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Left Side - Branding -->
+        <div class="auth-left">
+            <div class="auth-left-content">
+                <div class="logo-large">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h1 class="brand-title">HR Management</h1>
+                <p class="brand-subtitle">Join our team and access your personal HR dashboard</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <i class="fas fa-user"></i>
+                        <span>Personal Profile</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Salary & Benefits</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Time Tracking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Performance Reports</span>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="demo-credentials">
+                    <h4><i class="fas fa-info-circle"></i> Employee Registration</h4>
+                    <p>Create your employee account to access your personal HR dashboard and manage your work information.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Signup Form -->
+        <div class="auth-right">
+            <div class="auth-form">
+                <div class="auth-header">
+                    <h2 class="auth-title">Create Employee Account</h2>
+                    <p class="auth-subtitle">Join our HR management platform</p>
+                </div>
+
+                <form id="employeeSignupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-input" id="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-input" id="lastName" placeholder="Last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Middle Name (optional)</label>
+                        <input type="text" class="form-input" id="middleName" placeholder="Middle name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" placeholder="Age" min="18" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-input" id="address" placeholder="Your address" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" class="form-input" id="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" class="form-input" id="phone" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Department</label>
+                            <input type="text" class="form-input" id="department" placeholder="Department">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Position</label>
+                            <input type="text" class="form-input" id="position" placeholder="Position">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password *</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-input" id="password" placeholder="Create a password" required minlength="6">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <div class="form-input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+
+                    <!-- Employee Role Display (Not selectable) -->
+                    <div class="form-group">
+                        <label class="form-label">Account Type</label>
+                        <div class="role-display">
+                            <div class="role-info">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <h4>Employee Account</h4>
+                                    <p>Access your personal HR dashboard and manage your work information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span id="signupButtonText">Create Employee Account</span>
+                        <div id="signupLoading" class="loading hidden"></div>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Already have an account?</span>
+                </div>
+
+                <button type="button" class="btn btn-secondary" onclick="goToLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { neon } from "https://cdn.jsdelivr.net/npm/@neondatabase/serverless@0.7.0/+esm";
+
+        const connectionString = "postgresql://neondb_owner:npg_J1gloZUcFQS2@ep-still-truth-a1051s4o-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+        const sql = neon(connectionString);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('employeeSignupForm').addEventListener('submit', handleSignup);
+            checkExistingSession();
+        });
+
+        function checkExistingSession() {
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    if (user.port_role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        window.location.href = 'employee-dashboard.html';
+                    }
+                } catch (error) {
+                    console.error('Error parsing session:', error);
+                    sessionStorage.removeItem('currentUser');
+                }
+            }
+        }
+
+        window.goToLogin = function() {
+            window.location.href = 'login.html';
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const middleName = document.getElementById('middleName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const age = document.getElementById('age').value || null;
+            const address = document.getElementById('address').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const position = document.getElementById('position').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = 'employee'; // Fixed as employee
+
+            // Validation
+            if (!firstName || !middleName || !lastName || !email) {
+                showAlert('Please fill in all required fields (marked with *)', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters long', 'error');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Please enter a valid email address', 'error');
+                return;
+            }
+
+            setLoadingState(true);
+
+            try {
+                // Check if user already exists
+                const existingUser = await sql`
+                    SELECT employee_id FROM employees WHERE email = ${email}
+                `;
+
+                if (existingUser.length > 0) {
+                    showAlert('An account with this email already exists', 'error');
+                    setLoadingState(false);
+                    return;
+                }
+
+                // Insert new employee into database
+                const result = await sql`
+                    INSERT INTO employees (
+                        first_name, middle_name, last_name, suffix, age, address, 
+                        email, phone, emergency_contact, department, position, 
+                        port_pass, port_role
+                    ) VALUES (
+                        ${firstName}, ${middleName}, ${lastName}, ${''}, ${age}, ${address || null},
+                        ${email}, ${phone || null}, ${JSON.stringify({})}, ${department || null}, ${position || null},
+                        ${password}, ${role}
+                    ) RETURNING employee_id
+                `;
+
+                const newEmployeeId = result[0].employee_id;
+
+                // Create default salary record
+                await sql`
+                    INSERT INTO employee_salary (employee_id, job_title, hourly_rate)
+                    VALUES (${newEmployeeId}, ${position || 'Employee'}, 15.00)
+                `;
+
+                // Create default benefit record
+                await sql`
+                    INSERT INTO employee_benefits (employee_id, benefit_type, amount)
+                    VALUES (${newEmployeeId}, 'Health Insurance', 200.00)
+                `;
+
+                showAlert('Employee account created successfully! You can now log in.', 'success');
+                
+                // Reset form
+                document.getElementById('employeeSignupForm').reset();
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                if (error.message.includes('duplicate key')) {
+                    showAlert('An account with this email already exists', 'error');
+                } else {
+                    showAlert('Registration failed. Please try again.', 'error');
+                }
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        function setLoadingState(isLoading) {
+            const buttonText = document.getElementById('signupButtonText');
+            const loadingSpinner = document.getElementById('signupLoading');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            if (isLoading) {
+                buttonText.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+                submitButton.disabled = true;
+            } else {
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                submitButton.disabled = false;
+            }
+        }
+
+        function showAlert(message, type = 'info') {
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 'info-circle';
+            
+            alertDiv.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            const authForm = document.querySelector('.auth-form');
+            authForm.insertBefore(alertDiv, authForm.firstChild);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
