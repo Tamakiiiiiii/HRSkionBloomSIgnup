@@ -184,7 +184,7 @@
         }
 
         window.goToLogin = function() {
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         }
 
         async function handleSignup(e) {
@@ -204,7 +204,7 @@
             const role = 'employee'; // Fixed as employee
 
             // Validation
-            if (!firstName || !middleName || !lastName || !email) {
+            if (!firstName || !lastName || !email) {
                 showAlert('Please fill in all required fields (marked with *)', 'error');
                 return;
             }
@@ -330,3 +330,4 @@
     </script>
 </body>
 </html>
+
